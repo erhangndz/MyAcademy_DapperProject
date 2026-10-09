@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DapperApp.Web.Context;
 using DapperApp.Web.DTOs.Categories;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace DapperApp.Web.Services.Categories
 {
@@ -21,6 +22,7 @@ namespace DapperApp.Web.Services.Categories
             parameters.Add("@Name", categoryDto.Name);
             var connection = _context.CreateConnection();
             await connection.ExecuteAsync(query, parameters);
+
         }
 
         public async Task DeleteAsync(int id)
@@ -39,10 +41,10 @@ namespace DapperApp.Web.Services.Categories
             var connection = _context.CreateConnection();
 
             return await connection.QueryAsync<ResultCategoryDto>(query);
-            
+
         }
 
-        public async Task<ResultCategoryDto> GetByIdAsync(int id)
+        public async Task<UpdateCategoryDto> GetByIdAsync(int id)
         {
             string query = "select * from categories where CategoryId=@CategoryId";
             var parameters = new DynamicParameters();
@@ -50,7 +52,7 @@ namespace DapperApp.Web.Services.Categories
 
             var connection = _context.CreateConnection();
 
-    return await connection.QueryFirstOrDefaultAsync<ResultCategoryDto>(query, parameters);
+            return await connection.QueryFirstOrDefaultAsync<UpdateCategoryDto>(query, parameters);
         }
 
         public async Task UpdateAsync(UpdateCategoryDto categoryDto)
