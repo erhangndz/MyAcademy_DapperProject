@@ -17,6 +17,27 @@ namespace DapperApp.Web.Services.Products
             _db = context.CreateConnection();
         }
 
+        public async Task ChangeStatusAsync(int id)
+        {
+
+            var product = await GetByIdAsync(id);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@ProductId", id);
+            if (product.IsActive)
+            {
+                parameters.Add("@IsActive", false);
+            }
+            else
+            {
+                parameters.Add("@IsActive", true);
+            }
+                string query = "update products set IsActive=@IsActive where ProductId=@ProductId";
+
+            await _db.ExecuteAsync(query, parameters);
+
+            
+        }
 
         public async Task CreateAsync(CreateProductDto productDto)
         {

@@ -44,6 +44,31 @@ namespace DapperApp.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Update(int id)
+        {
+            await GetCategoriesAsync();
+            var product = await _productService.GetByIdAsync(id);
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateProductDto productDto)
+        {
+            await _productService.UpdateAsync(productDto);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _productService.DeleteAsync(id);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> ChangeStatus(int id)
+        {
+            await _productService.ChangeStatusAsync(id);
+            return RedirectToAction("Index");
+        }
 
     }
 }
